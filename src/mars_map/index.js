@@ -6,7 +6,7 @@ class MarsMap {
 		this.x = worldSize.x;
 		this.y = worldSize.y;
 
-		this.map = this.buildMap(this.x, this.y);
+		this.map = this.buildMap();
 	}
 
 	setMapValue(x, y, value) {
