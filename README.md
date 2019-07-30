@@ -18,7 +18,7 @@ node bin/mars.js my_input_path my_output_path
 ```
 
 **_Note_**: The program has been tested with Node 10.16.0 and npm 6.9.0
-
+**_Note 2_**: If executed in windows take care with EOL in default input.
 
 ## How to add more commands
 The program is ready to include new commands. In order to do this, you have to create a new file in *root_path/src/robot/commands*, export a function with the command functionality and add this function to *root_path/src/robot/commands/index.js* with its char order.
