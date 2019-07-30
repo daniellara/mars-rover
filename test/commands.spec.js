@@ -61,4 +61,88 @@ describe('Commands spec', function() {
 			expect(robot.actualPosition.orientation).toBe('E');
 		});
 	});
+
+	describe('Forward', function() {
+		test('should go forward one position to each orientation', function() {
+			const marsMap = new MarsMap({
+				x: 5,
+				y: 3
+			});
+
+			const robotInitPosition = {
+				x: 1,
+				y: 1,
+				orientation: 'E'
+			}
+			const robotOrders = [];
+			const robot = new Robot(marsMap, robotInitPosition, robotOrders, commands);
+
+			commands.F(robot)
+			expect(robot.actualPosition.x).toEqual(2);
+			expect(robot.actualPosition.y).toEqual(1);
+
+			robot.actualPosition.orientation = 'N';
+			commands.F(robot)
+			expect(robot.actualPosition.x).toEqual(2);
+			expect(robot.actualPosition.y).toEqual(2);
+
+			robot.actualPosition.orientation = 'W';
+			commands.F(robot)
+			expect(robot.actualPosition.x).toEqual(1);
+			expect(robot.actualPosition.y).toEqual(2);
+
+			robot.actualPosition.orientation = 'S';
+			commands.F(robot)
+			expect(robot.actualPosition.x).toEqual(1);
+			expect(robot.actualPosition.y).toEqual(1);
+		});
+
+		test('should left "scent" if the robot cross the frontier', function() {
+			const marsMap = new MarsMap({
+				x: 5,
+				y: 3
+			});
+
+			const robotInitPosition = {
+				x: 5,
+				y: 3,
+				orientation: 'E'
+			}
+			const robotOrders = [];
+			const robot = new Robot(marsMap, robotInitPosition, robotOrders, commands);
+
+			commands.F(robot);
+			expect(robot.actualPosition).toEqual({
+				x: 5,
+				y: 3,
+				orientation: 'E',
+				isLost: true
+			});
+			expect(marsMap.getMapValue(5, 3)).toEqual(-1);
+		});
+
+		test('should skip order if the robot cross the frontier and there is "scent"', function() {
+			const marsMap = new MarsMap({
+				x: 5,
+				y: 3
+			});
+
+			marsMap.setMapValue(5, 3, -1)
+
+			const robotInitPosition = {
+				x: 5,
+				y: 3,
+				orientation: 'E'
+			}
+			const robotOrders = [];
+			const robot = new Robot(marsMap, robotInitPosition, robotOrders, commands);
+
+			commands.F(robot);
+			expect(robot.actualPosition).toEqual({
+				x: 5,
+				y: 3,
+				orientation: 'E'
+			});
+		});
+	});
 })
